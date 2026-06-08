@@ -3,12 +3,22 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.7+](https://img.shields.io/badge/python-3.7+-blue.svg)](https://www.python.org/downloads/)
 [![Platform](https://img.shields.io/badge/platform-macOS%20%7C%20Windows-lightgrey.svg)]()
+[![Version](https://img.shields.io/badge/version-2.1-blue.svg)]()
 
 **中文 · [English](README_EN.md)**
 
 **实测可拿到 ChatGPT Plus / Pro / Spotify / Notion / Bumble 等任意 App 的全球订阅价格。**
 
 > 双击启动器 → 浏览器自动打开 → 搜索 App → 一键看 175 个国家的订阅价格对比
+
+## 🆕 V2.1 新功能 (2026-06)
+
+- 📈 **历史价格折线图**（180 天周期，每次查询自动累积快照，多国多线 + 悬停 tooltip）
+- 📊 **家族大表**：一张表横向看 ChatGPT Plus/Pro/Go 在 30 国全部价格 (热力图色)
+- ⚖️ **多 App 横向对比**：监控列表多选 → 为每 App 选订阅 → 跨 App 跨国大表 (如 ChatGPT vs YouTube vs Notion)
+- 🌐 **中英双语 UI 切换**（保存到 localStorage）
+- 🎯 **SKU 名称校准**：跨国对齐主键改用 `iapId`（Apple salableAdamId 全球唯一），显示名优先英文区 canonical
+- 🔍 **SKU 模糊搜索**：YouTube 31 个内购也能秒筛（支持中英文、全文匹配，如 "plus" / "月付" / "premium"）
 
 ## 📸 效果
 

@@ -3,10 +3,20 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.7+](https://img.shields.io/badge/python-3.7+-blue.svg)](https://www.python.org/downloads/)
 [![Platform](https://img.shields.io/badge/platform-macOS%20%7C%20Windows-lightgrey.svg)]()
+[![Version](https://img.shields.io/badge/version-2.1-blue.svg)]()
 
 **[中文](README.md) · English**
 
 > A double-click-to-run desktop tool that compares iOS App Store **subscription IAP prices** (and one-time app prices) across 175 countries — works for ChatGPT, Spotify, Notion, Bumble, Tinder, etc.
+
+## 🆕 What's new in V2.1 (Jun 2026)
+
+- 📈 **Price history line chart** (180-day window, auto-snapshot per query, multi-country multi-line + hover tooltip)
+- 📊 **Family Table**: horizontal grid showing all of ChatGPT Plus/Pro/Go across 30 countries with heatmap colors
+- ⚖️ **Multi-app cross comparison**: pick multiple apps from watchlist → choose one subscription per app → see them side-by-side across countries (e.g. ChatGPT vs YouTube vs Notion)
+- 🌐 **Bilingual UI** (中文 / English, persisted to localStorage)
+- 🎯 **SKU canonicalization**: aligned by `iapId` (Apple's globally unique salableAdamId), display names preferred from English-locale storefronts
+- 🔍 **Fuzzy SKU search**: filter through YouTube's 31 IAPs in milliseconds (supports both Chinese and English keywords)
 
 ## 📸 Real-world example
 

@@ -130,6 +130,58 @@
   .loading{display:inline-block;width:12px;height:12px;border:2px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .8s linear infinite;vertical-align:middle;margin-right:6px}
   @keyframes spin{to{transform:rotate(360deg)}}
   .footer-note{margin-top:24px;text-align:center;color:var(--muted);font-size:11px;padding:14px 0}
+  /* === V2.1: SKU search === */
+  .offer-search{display:flex;gap:6px;margin-bottom:10px;align-items:center}
+  .offer-search input{flex:1;padding:7px 10px;border-radius:7px;border:1px solid var(--border);background:var(--panel2);color:var(--text);font-size:12.5px;outline:none}
+  .offer-search input:focus{border-color:var(--accent)}
+  .offer-search .hit{font-size:11px;color:var(--muted);white-space:nowrap}
+  /* === V2.1: chart panel === */
+  .chart-panel{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin-top:14px}
+  .chart-panel .head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px;flex-wrap:wrap;gap:8px}
+  .chart-panel h4{margin:0;font-size:14px;font-weight:600}
+  .chart-panel .sub{font-size:11px;color:var(--muted)}
+  .chart-svg{width:100%;height:auto;display:block;background:transparent}
+  .chart-axis text{fill:var(--muted);font-size:10px}
+  .chart-axis line{stroke:var(--border);stroke-dasharray:3,3}
+  .chart-line{fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+  .chart-dot{cursor:pointer}
+  .chart-dot:hover{r:6}
+  .chart-tooltip{position:absolute;pointer-events:none;background:var(--panel);border:1px solid var(--border);padding:6px 10px;border-radius:6px;font-size:11.5px;box-shadow:var(--shadow);z-index:100;display:none;white-space:nowrap}
+  .chart-legend{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+  .chart-legend-item{display:inline-flex;align-items:center;gap:5px;padding:3px 8px;border-radius:5px;border:1px solid var(--border);background:var(--panel2);cursor:pointer;font-size:11.5px;user-select:none}
+  .chart-legend-item.dim{opacity:.4}
+  .chart-legend-item .swatch{width:10px;height:10px;border-radius:2px}
+  /* === V2.1: family table === */
+  .modal.wide{max-width:1280px}
+  .family-table-wrap{overflow-x:auto;max-height:60vh;border:1px solid var(--border);border-radius:8px}
+  table.family-table{font-size:12px;border-collapse:separate;border-spacing:0}
+  table.family-table th,table.family-table td{padding:7px 10px;border-bottom:1px solid var(--border);border-right:1px solid var(--border);white-space:nowrap;text-align:right;font-variant-numeric:tabular-nums}
+  table.family-table th{position:sticky;top:0;background:var(--panel2);z-index:2;text-align:center;font-weight:600;font-size:11px;color:var(--text)}
+  table.family-table th:first-child,table.family-table td:first-child{position:sticky;left:0;background:var(--panel2);z-index:1;text-align:left;font-weight:500}
+  table.family-table th:first-child{z-index:3}
+  table.family-table .small{font-size:10px;color:var(--muted);display:block}
+  /* heatmap colors via inline rgba */
+  /* === V2.1: multi-app compare === */
+  .watch-item .check-wrap{flex-shrink:0;display:flex;align-items:center}
+  .watch-item input[type=checkbox]{margin:0;cursor:pointer}
+  .multi-bar{position:sticky;bottom:0;left:0;right:0;background:var(--panel);border-top:1px solid var(--accent);border-radius:8px 8px 0 0;padding:10px 12px;display:none;align-items:center;justify-content:space-between;box-shadow:0 -4px 12px rgba(0,0,0,.15);margin:14px -16px -16px -16px;gap:8px;flex-wrap:wrap}
+  .multi-bar.show{display:flex}
+  .multi-bar .info{font-size:12px;font-weight:500}
+  .multi-app-picker{display:grid;gap:14px}
+  .multi-app-picker .app-row{border:1px solid var(--border);border-radius:8px;padding:10px 12px;background:var(--panel2)}
+  .multi-app-picker .app-row .app-meta{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+  .multi-app-picker .app-row img{width:32px;height:32px;border-radius:6px}
+  .multi-app-picker .app-row .name{font-weight:600;font-size:13px}
+  .multi-app-picker .offers-grid{display:flex;flex-wrap:wrap;gap:5px}
+  /* === V2.1: language switcher === */
+  .lang-switch{display:inline-flex;border:1px solid var(--border);border-radius:7px;overflow:hidden;background:var(--panel2);font-size:11.5px}
+  .lang-switch button{padding:5px 10px;background:transparent;color:var(--muted);border:none;cursor:pointer;font-size:11.5px}
+  .lang-switch button.active{background:var(--accent);color:#fff}
+  /* === Light mode tweaks for new components === */
+  @media (prefers-color-scheme: light){
+    .chart-axis line{stroke:#e3e6ee}
+    table.family-table th{background:#f0f2f7}
+  }
   @media (max-width:900px){
     .app{grid-template-columns:1fr}
     aside{position:relative;max-height:none;border-right:none;border-bottom:1px solid var(--border)}
@@ -139,34 +191,46 @@
 <body>
 <div class="app">
 <aside>
-  <h1>🌍 App 价格雷达</h1>
-  <div class="sub">应用价格 + 内购订阅 · 全球实时比价</div>
+  <div style="display:flex;justify-content:space-between;align-items:center;gap:6px;margin-bottom:4px">
+    <h1 data-i18n="appTitle">🌍 App 价格雷达</h1>
+    <div class="lang-switch">
+      <button data-lang="zh" class="active">中</button>
+      <button data-lang="en">EN</button>
+    </div>
+  </div>
+  <div class="sub" data-i18n="subtitle">应用价格 + 内购订阅 · 全球实时比价</div>
 
   <div class="search-box">
-    <input id="searchInput" placeholder="搜索 App / 粘贴 URL 或 ID" autofocus>
+    <input id="searchInput" data-i18n-attr="placeholder" data-i18n="searchPlaceholder" placeholder="搜索 App / 粘贴 URL 或 ID" autofocus>
   </div>
   <div class="search-box">
     <select id="searchCountry"></select>
-    <button class="btn primary" id="searchBtn">搜索</button>
+    <button class="btn primary" id="searchBtn" data-i18n="searchBtn">搜索</button>
   </div>
   <div class="results" id="searchResults"></div>
 
   <div class="section-title">
-    <span>监控列表 (<span id="watchCount">0</span>)</span>
-    <button class="btn ghost" id="refreshAllBtn" style="padding:4px 8px;font-size:11px">↻ 全部刷新</button>
+    <span><span data-i18n="watchlist">监控列表</span> (<span id="watchCount">0</span>)</span>
+    <button class="btn ghost" id="refreshAllBtn" style="padding:4px 8px;font-size:11px" data-i18n="refreshAll">↻ 全部刷新</button>
   </div>
   <div class="watchlist" id="watchlist"></div>
-  <div id="watchEmpty" class="empty">还没有应用，搜索后点击"加入监控"</div>
+  <div id="watchEmpty" class="empty" data-i18n="watchEmpty">还没有应用，搜索后点击"加入监控"</div>
+
+  <!-- V2.1: 多选浮动条 -->
+  <div class="multi-bar" id="multiBar">
+    <div class="info"><span data-i18n="selectedN">已选</span> <span id="multiCount">0</span></div>
+    <button class="btn primary" id="openMultiCompareBtn" data-i18n="multiCompare">⚖️ 对比所选</button>
+  </div>
 </aside>
 
 <main>
   <div id="emptyMain" class="empty-main">
     <div class="icon">💎</div>
-    <h3>开始你的全球订阅比价</h3>
-    <p>搜索任意 App 或游戏（中英文均可）。<br>
+    <h3 data-i18n="emptyTitle">开始你的全球订阅比价</h3>
+    <p data-i18n-html="emptyDesc">搜索任意 App 或游戏（中英文均可）。<br>
     选定后会自动并发查询全部勾选地区的<b>内购订阅价格</b>（如 ChatGPT Plus / Spotify / iCloud 等），<br>
     并按订阅产品分别展示跨国对比。也支持应用本身的一次性买断价格。</p>
-    <p style="margin-top:14px;font-size:12px">💡 试试：ChatGPT (id 6448311069)、Spotify、Notion、Bumble、YouTube Premium</p>
+    <p style="margin-top:14px;font-size:12px" data-i18n="emptyHint">💡 试试：ChatGPT (id 6448311069)、Spotify、Notion、Bumble、YouTube Premium</p>
   </div>
 
   <div id="appView" style="display:none">
@@ -180,16 +244,23 @@
         </div>
       </div>
       <div class="toolbar">
-        <button class="btn" id="addWatchBtn">➕ 加入监控</button>
-        <button class="btn" id="settingsBtn">⚙️ 地区设置</button>
-        <button class="btn" id="exportBtn">⬇️ 导出 CSV</button>
-        <button class="btn ghost" id="copyBtn">📋 复制</button>
+        <button class="btn" id="addWatchBtn" data-i18n="addWatch">➕ 加入监控</button>
+        <button class="btn" id="familyBtn" data-i18n="familyTable">📊 家族大表</button>
+        <button class="btn" id="settingsBtn" data-i18n="settings">⚙️ 地区</button>
+        <button class="btn" id="exportBtn" data-i18n="export">⬇️ CSV</button>
+        <button class="btn ghost" id="copyBtn" data-i18n="copy">📋 复制</button>
       </div>
     </div>
 
     <div class="mode-tabs">
-      <button data-mode="iap" class="active">💎 内购 / 订阅 <span class="count" id="iapCount">0</span></button>
-      <button data-mode="app">📱 应用本身价格</button>
+      <button data-mode="iap" class="active"><span data-i18n="iapMode">💎 内购 / 订阅</span> <span class="count" id="iapCount">0</span></button>
+      <button data-mode="app" data-i18n="appMode">📱 应用本身价格</button>
+    </div>
+
+    <!-- V2.1: SKU 模糊搜索 (仅 IAP 模式) -->
+    <div class="offer-search" id="offerSearchBar" style="display:none">
+      <input id="offerSearch" data-i18n-attr="placeholder" data-i18n="offerSearchPlaceholder" placeholder="🔍 搜索订阅产品（支持中英文，如 plus / 月付 / pro）">
+      <span class="hit" id="offerHit"></span>
     </div>
 
     <!-- 订阅产品选择条 (仅 IAP 模式显示) -->
@@ -201,9 +272,9 @@
     <div class="stats" id="stats"></div>
 
     <div class="filter-bar">
-      <input id="tableFilter" placeholder="筛选地区/币种…" style="min-width:160px">
+      <input id="tableFilter" data-i18n-attr="placeholder" data-i18n="tableFilterPlaceholder" placeholder="筛选地区/币种…" style="min-width:160px">
       <select id="convertCurrency">
-        <option value="">不换算</option>
+        <option value="" data-i18n="convertNone">不换算</option>
         <option value="USD">折算 USD</option>
         <option value="CNY" selected>折算 CNY</option>
         <option value="EUR">折算 EUR</option>
@@ -217,12 +288,12 @@
       <table id="priceTable">
         <thead>
           <tr>
-            <th data-sort="country">地区</th>
-            <th data-sort="rawPrice">原币价格</th>
-            <th data-sort="cnyPrice" class="sorted" data-arrow="↑">折算价</th>
-            <th data-sort="vsLow">vs 最低</th>
-            <th data-sort="period">周期</th>
-            <th>本地化名称</th>
+            <th data-sort="country" data-i18n="colCountry">地区</th>
+            <th data-sort="rawPrice" data-i18n="colRawPrice">原币价格</th>
+            <th data-sort="cnyPrice" class="sorted" data-arrow="↑" data-i18n="colConverted">折算价</th>
+            <th data-sort="vsLow" data-i18n="colVsLow">vs 最低</th>
+            <th data-sort="period" data-i18n="colPeriod">周期</th>
+            <th data-i18n="colName">本地化名称</th>
             <th>状态</th>
           </tr>
         </thead>
@@ -230,34 +301,104 @@
       </table>
     </div>
 
-    <div class="footer-note">
+    <!-- V2.1: 历史价格折线图 -->
+    <div class="chart-panel" id="chartPanel" style="display:none">
+      <div class="head">
+        <h4 data-i18n="chartTitle">📈 历史价格走势</h4>
+        <span class="sub" id="chartSub" data-i18n="chartHint">每次查询自动累积快照（价格不变跳过），180 天周期</span>
+      </div>
+      <div id="chartContent"></div>
+      <div class="chart-legend" id="chartLegend"></div>
+    </div>
+
+    <div class="footer-note" data-i18n="footerNote">
       数据来自 Apple iTunes API + apps.apple.com 内部 API · 汇率来自 ECB · 监控记录仅本地浏览器
     </div>
   </div>
 </main>
 </div>
 
+<!-- 地区设置 -->
 <div class="modal-bg" id="settingsModal">
   <div class="modal">
-    <h3>选择查询地区</h3>
+    <h3 data-i18n="pickRegions">选择查询地区</h3>
     <div style="display:flex;gap:8px;margin-bottom:8px;flex-wrap:wrap">
-      <button class="btn" id="presetCommon">常用 30 国</button>
-      <button class="btn" id="presetAll">全部</button>
-      <button class="btn" id="presetNone">取消</button>
-      <button class="btn" id="presetAsia">亚太</button>
-      <button class="btn" id="presetEU">欧洲</button>
-      <button class="btn" id="presetAmericas">美洲</button>
-      <input id="countryFilter" placeholder="筛选…" style="flex:1;padding:7px 10px;border-radius:7px;border:1px solid var(--border);background:var(--panel2);color:var(--text);min-width:120px">
+      <button class="btn" id="presetCommon" data-i18n="presetCommon">常用 30 国</button>
+      <button class="btn" id="presetAll" data-i18n="presetAll">全部</button>
+      <button class="btn" id="presetNone" data-i18n="presetNone">取消</button>
+      <button class="btn" id="presetAsia" data-i18n="presetAsia">亚太</button>
+      <button class="btn" id="presetEU" data-i18n="presetEU">欧洲</button>
+      <button class="btn" id="presetAmericas" data-i18n="presetAmericas">美洲</button>
+      <input id="countryFilter" data-i18n-attr="placeholder" data-i18n="filterPlaceholder" placeholder="筛选…" style="flex:1;padding:7px 10px;border-radius:7px;border:1px solid var(--border);background:var(--panel2);color:var(--text);min-width:120px">
     </div>
     <div class="country-grid" id="countryGrid"></div>
     <div class="modal-actions">
-      <button class="btn" id="settingsCancel">取消</button>
-      <button class="btn primary" id="settingsSave">保存并查询</button>
+      <button class="btn" id="settingsCancel" data-i18n="cancel">取消</button>
+      <button class="btn primary" id="settingsSave" data-i18n="saveAndQuery">保存并查询</button>
+    </div>
+  </div>
+</div>
+
+<!-- V2.1: 家族大表 modal -->
+<div class="modal-bg" id="familyModal">
+  <div class="modal wide">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px">
+      <h3 style="margin:0" data-i18n="familyTableTitle">📊 同应用订阅家族横向对比</h3>
+      <div style="display:flex;gap:8px;align-items:center">
+        <select id="familyConvert" style="padding:6px 9px;border-radius:7px;border:1px solid var(--border);background:var(--panel2);color:var(--text);font-size:12px">
+          <option value="CNY" selected>CNY</option>
+          <option value="USD">USD</option>
+          <option value="EUR">EUR</option>
+          <option value="JPY">JPY</option>
+        </select>
+        <button class="btn" id="familyExportBtn" data-i18n="export">⬇️ CSV</button>
+      </div>
+    </div>
+    <div style="font-size:12px;color:var(--muted);margin-bottom:10px" id="familyDesc"></div>
+    <div class="family-table-wrap" id="familyTableWrap"></div>
+    <div class="modal-actions">
+      <button class="btn primary" id="familyClose" data-i18n="close">关闭</button>
+    </div>
+  </div>
+</div>
+
+<!-- V2.1: 多 App 对比 - Step 1 选 offer -->
+<div class="modal-bg" id="multiPickerModal">
+  <div class="modal wide">
+    <h3 data-i18n="multiPickerTitle">为每个 App 选择想对比的订阅产品</h3>
+    <div style="font-size:12px;color:var(--muted);margin-bottom:12px" data-i18n="multiPickerHint">点击订阅产品名选中（每个 App 一个）。所有 App 都选好后点"对比"。</div>
+    <div class="multi-app-picker" id="multiAppPicker"></div>
+    <div class="modal-actions">
+      <button class="btn" id="multiPickerCancel" data-i18n="cancel">取消</button>
+      <button class="btn primary" id="multiPickerOK" data-i18n="compareNow" disabled>对比 (0/0)</button>
+    </div>
+  </div>
+</div>
+
+<!-- V2.1: 多 App 对比 - Step 2 结果 -->
+<div class="modal-bg" id="multiCompareModal">
+  <div class="modal wide">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px">
+      <h3 style="margin:0" data-i18n="multiCompareTitle">⚖️ 多 App 跨国比价</h3>
+      <div style="display:flex;gap:8px;align-items:center">
+        <select id="multiConvert" style="padding:6px 9px;border-radius:7px;border:1px solid var(--border);background:var(--panel2);color:var(--text);font-size:12px">
+          <option value="CNY" selected>CNY</option>
+          <option value="USD">USD</option>
+          <option value="EUR">EUR</option>
+          <option value="JPY">JPY</option>
+        </select>
+        <button class="btn" id="multiExportBtn" data-i18n="export">⬇️ CSV</button>
+      </div>
+    </div>
+    <div class="family-table-wrap" id="multiCompareTableWrap"></div>
+    <div class="modal-actions">
+      <button class="btn primary" id="multiCompareClose" data-i18n="close">关闭</button>
     </div>
   </div>
 </div>
 
 <div class="toast" id="toast"></div>
+<div class="chart-tooltip" id="chartTooltip"></div>
 
 <script>
 /* ====================== 175 国 ====================== */
@@ -309,22 +450,145 @@ const COUNTRIES = [
 ];
 const DEFAULT_PICK = ["US","CN","HK","TW","JP","KR","GB","DE","FR","IT","ES","RU","BR","MX","IN","ID","TH","VN","PH","MY","SG","AU","CA","AR","TR","NG","EG","ZA","AE","SA"];
 
+/* ====================== V2.1: i18n ====================== */
+const I18N = {
+  zh: {
+    appTitle:"🌍 App 价格雷达", subtitle:"应用价格 + 内购订阅 · 全球实时比价",
+    searchPlaceholder:"搜索 App / 粘贴 URL 或 ID", searchBtn:"搜索",
+    watchlist:"监控列表", refreshAll:"↻ 全部刷新", watchEmpty:"还没有应用，搜索后点击\"加入监控\"",
+    addWatch:"➕ 加入监控", settings:"⚙️ 地区", export:"⬇️ CSV", copy:"📋 复制",
+    familyTable:"📊 家族大表", multiCompare:"⚖️ 对比所选", selectedN:"已选",
+    iapMode:"💎 内购 / 订阅", appMode:"📱 应用本身价格",
+    offerSearchPlaceholder:"🔍 搜索订阅产品（支持中英文，如 plus / 月付 / pro）",
+    tableFilterPlaceholder:"筛选地区/币种…", convertNone:"不换算",
+    colCountry:"地区", colRawPrice:"原币价格", colConverted:"折算价",
+    colVsLow:"vs 最低", colPeriod:"周期", colName:"本地化名称", colStatus:"状态",
+    chartTitle:"📈 历史价格走势", chartHint:"每次查询自动累积快照（价格不变跳过），180 天周期",
+    chartEmpty:"暂无历史数据。每次查询都会自动保存一条快照（价格不变则跳过）。", chartNoData:"该订阅没有最近 180 天的快照数据",
+    statsLowest:"最低价", statsHighest:"最高价", statsAvg:"平均价", statsSpread:"最大价差", statsFreeNA:"免费 / 未上架",
+    statusFree:"免费", statusPaid:"付费", statusSub:"订阅", statusNA:"N/A", statusOnce:"一次性",
+    notListed:"未上架", netError:"网络失败", queriedYet:"未查询", notInRegion:"此区无此订阅",
+    addedToWatch:"已加入监控 ✓", alreadyInWatch:"已在监控中", csvDone:"CSV 已下载 ✓",
+    copyDone:"已复制 ✓", selectOne:"至少选一个地区", selectApp:"先选一个 App",
+    pickRegions:"选择查询地区", presetCommon:"常用 30 国", presetAll:"全部",
+    presetNone:"取消", presetAsia:"亚太", presetEU:"欧洲", presetAmericas:"美洲",
+    cancel:"取消", saveAndQuery:"保存并查询", close:"关闭", filterPlaceholder:"筛选…",
+    period_P1W:"周付", period_P1M:"月付", period_P2M:"双月付", period_P3M:"季付",
+    period_P6M:"半年付", period_P1Y:"年付", period_ONCE:"一次性",
+    emptyTitle:"开始你的全球订阅比价",
+    emptyDesc:"搜索任意 App 或游戏（中英文均可）。<br>选定后会自动并发查询全部勾选地区的<b>内购订阅价格</b>（如 ChatGPT Plus / Spotify / iCloud 等），<br>按订阅产品分别展示跨国对比。也支持应用本身的一次性买断价格。",
+    emptyHint:"💡 试试：ChatGPT (id 6448311069)、Spotify、Notion、Bumble、YouTube Premium",
+    productLabel:"订阅产品", cycleLabel:"周期", countriesAvail:"国有售",
+    multiPickerTitle:"为每个 App 选择想对比的订阅产品",
+    multiPickerHint:"点击订阅产品名选中（每个 App 一个）。所有 App 都选好后点\"对比\"。",
+    multiCompareTitle:"⚖️ 多 App 跨国比价", compareNow:"对比",
+    familyTableTitle:"📊 同应用订阅家族横向对比",
+    footerNote:"数据来自 Apple iTunes API + apps.apple.com 内部 API · 汇率来自 ECB · 监控记录仅本地浏览器",
+    noOffers:"⚠️ 此 App 没有内购数据。可能：① 应用确实没有 IAP；② 在所选地区均未上架；③ 改用 \"应用本身价格\" 模式查看。",
+    queryingApps:"正在查询 {n} 个 App 的 IAP 数据…",
+    needAtLeast2:"至少选择 2 个 App",
+    pleasePickOffer:"请为每个 App 选一个订阅产品",
+    lowest:"最低", iaps:"个内购",
+  },
+  en: {
+    appTitle:"🌍 App Price Radar", subtitle:"App + IAP subscription · Global real-time comparison",
+    searchPlaceholder:"Search app / paste URL or ID", searchBtn:"Search",
+    watchlist:"Watchlist", refreshAll:"↻ Refresh all", watchEmpty:"No apps yet. Search then click \"Watch\".",
+    addWatch:"➕ Watch", settings:"⚙️ Regions", export:"⬇️ CSV", copy:"📋 Copy",
+    familyTable:"📊 Family Table", multiCompare:"⚖️ Compare", selectedN:"Selected",
+    iapMode:"💎 IAP / Subscription", appMode:"📱 App Price",
+    offerSearchPlaceholder:"🔍 Search subscriptions (e.g. plus / monthly / pro)",
+    tableFilterPlaceholder:"Filter region/currency…", convertNone:"No conversion",
+    colCountry:"Region", colRawPrice:"Local price", colConverted:"Converted",
+    colVsLow:"vs lowest", colPeriod:"Cycle", colName:"Localized name", colStatus:"Status",
+    chartTitle:"📈 Price history", chartHint:"Snapshots saved automatically per query (skipped if unchanged), 180-day window",
+    chartEmpty:"No history yet. Each query saves a snapshot (skipped if prices unchanged).", chartNoData:"No snapshots in the last 180 days for this subscription",
+    statsLowest:"Lowest", statsHighest:"Highest", statsAvg:"Average", statsSpread:"Spread", statsFreeNA:"Free / N/A",
+    statusFree:"Free", statusPaid:"Paid", statusSub:"Sub", statusNA:"N/A", statusOnce:"One-time",
+    notListed:"Not listed", netError:"Network error", queriedYet:"Not queried", notInRegion:"Not in this region",
+    addedToWatch:"Added ✓", alreadyInWatch:"Already watching", csvDone:"CSV downloaded ✓",
+    copyDone:"Copied ✓", selectOne:"Pick at least one region", selectApp:"Pick an app first",
+    pickRegions:"Pick query regions", presetCommon:"Top 30", presetAll:"All",
+    presetNone:"Clear", presetAsia:"Asia-Pacific", presetEU:"Europe", presetAmericas:"Americas",
+    cancel:"Cancel", saveAndQuery:"Save & Query", close:"Close", filterPlaceholder:"Filter…",
+    period_P1W:"Weekly", period_P1M:"Monthly", period_P2M:"Bi-monthly", period_P3M:"Quarterly",
+    period_P6M:"Semi-annual", period_P1Y:"Yearly", period_ONCE:"One-time",
+    emptyTitle:"Start global subscription price comparison",
+    emptyDesc:"Search any app or game.<br>The tool will fetch <b>IAP subscription prices</b> (e.g. ChatGPT Plus / Spotify / iCloud) across the selected storefronts in parallel,<br>then group results by subscription product for cross-region comparison.",
+    emptyHint:"💡 Try: ChatGPT (id 6448311069), Spotify, Notion, Bumble, YouTube Premium",
+    productLabel:"Product", cycleLabel:"Cycle", countriesAvail:"available regions",
+    multiPickerTitle:"Pick a subscription for each app to compare",
+    multiPickerHint:"Click one product per app. Click \"Compare\" once all apps have a pick.",
+    multiCompareTitle:"⚖️ Multi-app cross-region comparison", compareNow:"Compare",
+    familyTableTitle:"📊 Same-app subscription family — horizontal comparison",
+    footerNote:"Data from Apple iTunes API + apps.apple.com internal API · FX from ECB · Watchlist stored locally",
+    noOffers:"⚠️ This app has no IAP data. Possible reasons: (1) really no IAP; (2) not listed in any selected region; (3) switch to \"App Price\" mode.",
+    queryingApps:"Querying IAP data for {n} apps…",
+    needAtLeast2:"Pick at least 2 apps",
+    pleasePickOffer:"Please pick a subscription for each app",
+    lowest:"Lowest", iaps:" IAPs",
+  },
+};
+let LANG = localStorage.getItem("aptLang") || (navigator.language.startsWith("en") ? "en" : "zh");
+function t(key, vars){
+  let s = (I18N[LANG] || I18N.zh)[key] || key;
+  if (vars) for (const k in vars) s = s.replace("{"+k+"}", vars[k]);
+  return s;
+}
+function periodLabel(p){ return t("period_"+(p||"ONCE")) || (p || t("period_ONCE")); }
+function applyI18N(){
+  document.documentElement.lang = LANG === "en" ? "en" : "zh-CN";
+  document.title = LANG === "en"
+    ? "App Store Cross-Region Price · IAP + App Price"
+    : "App Store 全球比价 · IAP 订阅 + 应用价格";
+  document.querySelectorAll("[data-i18n]").forEach(el => {
+    const k = el.getAttribute("data-i18n");
+    const attr = el.getAttribute("data-i18n-attr");
+    const html = el.getAttribute("data-i18n-html");
+    if (attr) el.setAttribute(attr, t(k));
+    else if (el.hasAttribute("data-i18n-html")) el.innerHTML = t(k);
+    else el.textContent = t(k);
+  });
+  // 语言开关 active 状态
+  document.querySelectorAll(".lang-switch button").forEach(b => b.classList.toggle("active", b.dataset.lang === LANG));
+}
+
 const $ = id => document.getElementById(id);
 const LS_KEY = "appPriceTrackerV2";
-let state = JSON.parse(localStorage.getItem(LS_KEY) || "null") || {
-  watchlist: [], selectedCountries: DEFAULT_PICK, fxRates: { USD:1 }, fxTs: 0,
-};
-function save(){ localStorage.setItem(LS_KEY, JSON.stringify(state)); }
+let state = JSON.parse(localStorage.getItem(LS_KEY) || "null") || {};
+state.watchlist = state.watchlist || [];
+state.selectedCountries = state.selectedCountries || DEFAULT_PICK;
+state.fxRates = state.fxRates || { USD:1 };
+state.fxTs = state.fxTs || 0;
+// V2.1 新字段
+state.history = state.history || {};      // "<appId>:<offerKey>" → [{ts, prices:{cc:{p,c}}}, ...]
+state.iapCache = state.iapCache || {};    // "<appId>" → { name, icon, artist, offers, queriedAt }
+function save(){
+  try { localStorage.setItem(LS_KEY, JSON.stringify(state)); }
+  catch(e){
+    // localStorage 满了 → 清最老的 history
+    const keys = Object.keys(state.history);
+    if (keys.length > 0){
+      keys.sort((a,b) => (state.history[a][0]?.ts || 0) - (state.history[b][0]?.ts || 0));
+      delete state.history[keys[0]];
+      save();
+    }
+  }
+}
 
 let currentApp = null;
-let currentMode = "iap";   // "iap" | "app"
-let appPriceResults = [];  // 应用本身价格
-let iapByCountry = {};     // { US: { ok:true, iaps:[...] }, JP: {...} }
-let allOffers = [];        // 跨国聚合：[{offerName, name, groupName, period, isSubscription, prices:{US:{price,currency,...}}}]
+let currentMode = "iap";
+let appPriceResults = [];
+let iapByCountry = {};
+let allOffers = [];                 // 含 prices: { CC: {price,currency,formatted,localizedName} }
+let allOffersFiltered = [];         // 模糊搜索过滤后的子集
 let currentOfferKey = null;
 let currentTableData = [];
 let sortKey = "cnyPrice", sortDir = 1;
 let convertTo = "CNY";
+let chartLegendState = {};          // { cc: bool }, 控制折线图国家显示
+let multiSelectIds = new Set();     // 监控列表多选
+let multiPickerSelections = {};     // { appId: offerKey }
 
 /* ====================== Helpers ====================== */
 function toast(msg, ms=1800){ const t=$("toast"); t.textContent=msg; t.classList.add("show"); clearTimeout(toast._t); toast._t=setTimeout(()=>t.classList.remove("show"), ms); }
@@ -413,6 +677,8 @@ async function doSearch(){
 
 /* ====================== Select & Query ====================== */
 async function selectApp(app){
+  // 切换 App 时清掉图表的国家选择状态（让新 App 重选默认 5 国）
+  if (!currentApp || currentApp.trackId !== app.trackId) chartLegendState = {};
   currentApp = app;
   $("emptyMain").style.display = "none";
   $("appView").style.display = "block";
@@ -467,40 +733,66 @@ async function runAppPrice(countries){
 }
 
 /* ---- 内购订阅价格 (核心) ---- */
+/* ---- 内购订阅价格 (核心 V2.1: SKU 校准 + 历史快照) ----
+ * 对齐主键说明：
+ *   - 主键用 iapId (Apple salableAdamId)，这是 SKU 的全球唯一 ID
+ *   - 同一 iapId 在所有国家指向同一个产品（哪怕本地化名不同）
+ *   - 周期 (period) 不同的视为不同 offer（如 Plus 月付 vs Plus 年付 同 iapId 但分两行）
+ *   - 显示名 (canonicalName) 优先取 US/GB/CA/AU/IE 等英文区，兜底用首条
+ */
 async function runIAP(countries){
   iapByCountry = {};
-  const onProg = (d,t)=>{ $("progressBar").style.width=(d/t*100).toFixed(0)+"%"; $("progressText").textContent=`${d}/${t}`; };
+  const onProg = (d,total)=>{ $("progressBar").style.width=(d/total*100).toFixed(0)+"%"; $("progressText").textContent=`${d}/${total}`; };
   const results = await pool(countries, async cc=>{
     try{
       const d = await api("iap", { id: currentApp.trackId, country: cc });
-      return { country: cc, ...d, country: cc };  // 强制保留大写 cc
-    }catch(e){ return { country: cc, ok: false, reason: "网络失败" }; }
+      // 后端返回 country 是小写；统一回大写以匹配 selectedCountries
+      return { ...d, country: cc };
+    }catch(e){ return { country: cc, ok: false, reason: t("netError") }; }
   }, 5, onProg);
   results.forEach(r=>{ iapByCountry[r.country] = r; });
 
-  // 跨国聚合：按 offerName + period 聚合
+  // 跨国聚合：按 iapId + period 聚合（V2.1 改进）
   const map = {};
   results.forEach(r=>{
     if (!r.ok || !r.iaps) return;
     r.iaps.forEach(iap=>{
-      const key = (iap.offerName || iap.iapId) + "::" + (iap.period || "ONCE");
+      const skuId = iap.iapId || iap.offerName || ("unknown_"+Math.random());
+      const key = skuId + "::" + (iap.period || "ONCE");
       if (!map[key]){
         map[key] = {
           offerKey: key,
+          iapId: iap.iapId,
           offerName: iap.offerName,
-          name: iap.name,
-          groupName: iap.groupName || "其他",
+          name: iap.name,                              // 第一次见到的 name (会被 canonical 覆盖)
+          groupName: iap.groupName,                    // 也用 canonical 化逻辑
           groupRank: iap.groupRank ?? 999,
           period: iap.period,
           isSubscription: iap.isSubscription,
-          prices: {},
+          prices: {},                                   // { CC: { price, currency, formatted, localizedName } }
         };
       }
       map[key].prices[r.country] = {
         price: iap.price, currency: iap.currencyCode, formatted: iap.priceFormatted,
-        localizedName: iap.name,
+        localizedName: iap.name, localizedGroupName: iap.groupName,
       };
     });
+  });
+  // SKU 名称校准：优先用英文区的 name 作为 canonical 显示名
+  const ENGLISH_CC = ["US","GB","CA","AU","IE","SG","HK","NZ","ZA","IN","PH","MY"];
+  Object.values(map).forEach(off => {
+    for (const cc of ENGLISH_CC){
+      if (off.prices[cc] && off.prices[cc].localizedName){
+        off.name = off.prices[cc].localizedName;
+        if (off.prices[cc].localizedGroupName) off.groupName = off.prices[cc].localizedGroupName;
+        return;
+      }
+    }
+    // 兜底：找任意非空 name
+    for (const cc in off.prices){
+      if (off.prices[cc].localizedName){ off.name = off.prices[cc].localizedName; break; }
+    }
+    off.groupName = off.groupName || (LANG==="en"?"Other":"其他");
   });
   allOffers = Object.values(map).sort((a,b)=>{
     if (a.groupName !== b.groupName) return (a.groupName||"").localeCompare(b.groupName||"");
@@ -508,14 +800,17 @@ async function runIAP(countries){
     const order = ["P1W","P1M","P2M","P3M","P6M","P1Y","ONCE"];
     return order.indexOf(a.period||"ONCE") - order.indexOf(b.period||"ONCE");
   });
+  allOffersFiltered = allOffers;
   $("iapCount").textContent = allOffers.length;
 
   if (!allOffers.length){
+    $("offerSearchBar").style.display = "none";
     $("offerBar").style.display = "none";
     $("modeDesc").style.display = "block";
-    $("modeDesc").innerHTML = `⚠️ 此 App 没有内购数据。可能：① 应用确实没有 IAP；② 在所选地区均未上架；③ 改用 <b>应用本身价格</b> 模式查看一次性价格。`;
+    $("modeDesc").innerHTML = t("noOffers");
     $("priceBody").innerHTML = "";
     $("stats").innerHTML = "";
+    $("chartPanel").style.display = "none";
     return;
   }
 
@@ -529,14 +824,73 @@ async function runIAP(countries){
     });
     currentOfferKey = ranked[0].offerKey;
   }
+
+  // V2.1: 保存到 iapCache（多 App 对比要用）+ 历史快照
+  saveSnapshot();
+
+  $("offerSearchBar").style.display = "flex";
   renderOfferBar();
   renderForOffer();
 }
 
+/* ---- V2.1: 历史快照保存 + 缓存 ---- */
+function saveSnapshot(){
+  if (!currentApp || !allOffers.length) return;
+  const appId = String(currentApp.trackId);
+  // iapCache: 当前快照（多 App 对比用）
+  state.iapCache[appId] = {
+    name: currentApp.trackName,
+    icon: currentApp.artworkUrl60 || currentApp.artworkUrl100,
+    artist: currentApp.artistName,
+    offers: allOffers.map(o => ({
+      offerKey: o.offerKey, iapId: o.iapId, offerName: o.offerName,
+      name: o.name, groupName: o.groupName, period: o.period,
+      isSubscription: o.isSubscription,
+      prices: o.prices,
+    })),
+    queriedAt: Date.now(),
+  };
+  // history: 时间序列（每个 offer 一条线）
+  const cutoff = Date.now() - 180 * 86400000;
+  allOffers.forEach(o => {
+    const k = appId + ":" + o.offerKey;
+    state.history[k] = state.history[k] || [];
+    // 紧凑快照：{cc: {p, c}} (省 localStorage)
+    const snap = {};
+    for (const cc in o.prices) {
+      snap[cc] = { p: o.prices[cc].price, c: o.prices[cc].currency };
+    }
+    // 去重：跟最后一条一样就不存
+    const last = state.history[k][state.history[k].length - 1];
+    if (!last || JSON.stringify(last.prices) !== JSON.stringify(snap)) {
+      state.history[k].push({ ts: Date.now(), prices: snap });
+    }
+    // 修剪：180 天 + 最多 30 条
+    state.history[k] = state.history[k].filter(s => s.ts >= cutoff).slice(-30);
+  });
+  save();
+}
+
 function renderOfferBar(){
+  const q = ($("offerSearch")?.value || "").trim().toLowerCase();
+  // 模糊搜索：匹配 name / offerName / groupName / period 中文标签
+  if (q){
+    allOffersFiltered = allOffers.filter(o => {
+      const hay = [
+        o.name, o.offerName, o.groupName, periodLabel(o.period),
+        // 各国本地化名也参与匹配
+        ...Object.values(o.prices).map(p => p.localizedName).filter(Boolean),
+      ].join(" ").toLowerCase();
+      return q.split(/\s+/).every(part => hay.includes(part));
+    });
+  } else {
+    allOffersFiltered = allOffers;
+  }
+  $("offerHit") && ($("offerHit").textContent = q ? `${allOffersFiltered.length}/${allOffers.length}` : "");
+
   const groups = {};
-  allOffers.forEach(o=>{
-    const g = o.groupName || "其他";
+  allOffersFiltered.forEach(o=>{
+    const g = o.groupName || (LANG==="en"?"Other":"其他");
     if (!groups[g]) groups[g] = [];
     groups[g].push(o);
   });
@@ -553,14 +907,10 @@ function renderOfferBar(){
     </div>
   `).join("");
   $("offerBar").style.display = "block";
-  $("offerBar").querySelectorAll(".offer-chip").forEach(el=>{
-    el.addEventListener("click", ()=>{
-      currentOfferKey = el.dataset.key;
-      renderOfferBar(); renderForOffer();
-    });
-  });
+  // 注：chip 点击通过事件委托在 wire up 区统一处理，这里不再重复绑定
 }
-function periodLabel(p){
+function periodLabel_DEPRECATED(p){
+  // 已被 i18n 版替换，保留只为兼容老调用（实际已不会走到）
   const m = { P1W:"周付", P1M:"月付", P2M:"双月付", P3M:"季付", P6M:"半年付", P1Y:"年付" };
   return m[p] || (p ? p : "一次性");
 }
@@ -568,13 +918,14 @@ function renderForOffer(){
   const offer = allOffers.find(o=>o.offerKey===currentOfferKey);
   if (!offer) return;
   $("modeDesc").style.display = "block";
-  $("modeDesc").innerHTML = `订阅产品: <b>${esc(offer.name)}</b> · 周期 <b>${periodLabel(offer.period)}</b> · ${offer.isSubscription ? "订阅" : "一次性内购"} · 共 ${Object.keys(offer.prices).length} 国有售`;
+  const subStr = offer.isSubscription ? t("statusSub") : t("statusOnce");
+  $("modeDesc").innerHTML = `${t("productLabel")}: <b>${esc(offer.name)}</b> · ${t("cycleLabel")} <b>${periodLabel(offer.period)}</b> · ${subStr} · ${Object.keys(offer.prices).length} ${t("countriesAvail")}`;
   // 构造表行
   const rows = state.selectedCountries.map(cc=>{
     const country_data = iapByCountry[cc];
-    if (!country_data || !country_data.ok) return { country: cc, ok: false, reason: country_data?.reason || "未查询" };
+    if (!country_data || !country_data.ok) return { country: cc, ok: false, reason: country_data?.reason || t("queriedYet") };
     const p = offer.prices[cc];
-    if (!p) return { country: cc, ok: false, reason: "此区无此订阅" };
+    if (!p) return { country: cc, ok: false, reason: t("notInRegion") };
     return {
       country: cc, ok: true,
       price: p.price, currency: p.currency, formattedPrice: p.formatted,
@@ -586,6 +937,8 @@ function renderForOffer(){
   });
   renderTable(rows);
   renderStats(rows, offer.name + " · " + periodLabel(offer.period));
+  // V2.1: 渲染历史折线图
+  renderChart(offer);
 }
 
 function renderStats(arr, label){
@@ -598,29 +951,29 @@ function renderStats(arr, label){
   const na = arr.filter(r=>!r.ok).length;
   $("stats").innerHTML = `
     <div class="stat-card low">
-      <div class="label">最低价</div>
+      <div class="label">${t("statsLowest")}</div>
       <div class="value">${fmt(min.cnyPrice,"CNY")}</div>
       <div class="sub">${flagOf(min.country)} ${nameOf(min.country)} · ${min.formattedPrice}</div>
     </div>
     <div class="stat-card high">
-      <div class="label">最高价</div>
+      <div class="label">${t("statsHighest")}</div>
       <div class="value">${fmt(max.cnyPrice,"CNY")}</div>
       <div class="sub">${flagOf(max.country)} ${nameOf(max.country)} · ${max.formattedPrice}</div>
     </div>
     <div class="stat-card">
-      <div class="label">平均价</div>
+      <div class="label">${t("statsAvg")}</div>
       <div class="value">${fmt(avg,"CNY")}</div>
-      <div class="sub">${ok.length} 国有售</div>
+      <div class="sub">${ok.length} ${t("countriesAvail")}</div>
     </div>
     <div class="stat-card">
-      <div class="label">最大价差</div>
+      <div class="label">${t("statsSpread")}</div>
       <div class="value">${(((max.cnyPrice-min.cnyPrice)/min.cnyPrice)*100).toFixed(0)}%</div>
       <div class="sub">${nameOf(min.country)} → ${nameOf(max.country)}</div>
     </div>
     <div class="stat-card">
-      <div class="label">免费 / 未上架</div>
+      <div class="label">${t("statsFreeNA")}</div>
       <div class="value">${free} / ${na}</div>
-      <div class="sub">${label}</div>
+      <div class="sub">${esc(label||"")}</div>
     </div>
   `;
 }
@@ -652,8 +1005,8 @@ function renderTable(rows){
     if (!r.ok){
       return `<tr>
         <td class="country-cell"><span class="flag">${flagOf(r.country)}</span>${nameOf(r.country)}</td>
-        <td colspan="5" style="color:var(--muted);font-size:12px">${esc(r.reason||"无数据")}</td>
-        <td><span class="status na">N/A</span></td></tr>`;
+        <td colspan="5" style="color:var(--muted);font-size:12px">${esc(r.reason||"-")}</td>
+        <td><span class="status na">${t("statusNA")}</span></td></tr>`;
     }
     const isFree = r.price===0;
     let rowCls = "";
@@ -663,12 +1016,12 @@ function renderTable(rows){
     const cnyDisp = convertTo ? fmt(convert(r.price, r.currency, convertTo, state.fxRates), convertTo) : "—";
     return `<tr class="${rowCls}">
       <td class="country-cell"><span class="flag">${flagOf(r.country)}</span>${nameOf(r.country)} <span style="color:var(--muted);font-size:11px">·${r.country}</span></td>
-      <td class="price-cell">${isFree?'<span class="status free">免费</span>':fmt(r.price, r.currency)}</td>
+      <td class="price-cell">${isFree?`<span class="status free">${t("statusFree")}</span>`:fmt(r.price, r.currency)}</td>
       <td class="price-cell">${isFree?"—":cnyDisp}</td>
-      <td>${isFree?"—":(vsLow===0?'<span style="color:var(--low);font-weight:600">最低</span>':`<span class="delta ${vsLow>50?'up':''}">+${vsLow.toFixed(0)}%</span>`)}</td>
+      <td>${isFree?"—":(vsLow===0?`<span style="color:var(--low);font-weight:600">${t("lowest")}</span>`:`<span class="delta ${vsLow>50?'up':''}">+${vsLow.toFixed(0)}%</span>`)}</td>
       <td style="font-size:12px;color:var(--muted)">${periodLabel(r.period)}</td>
       <td style="color:var(--muted);font-size:12px;max-width:240px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(r.trackName||"")}</td>
-      <td>${isFree?'<span class="status free">免费</span>':'<span class="status ok">付费</span>'}</td>
+      <td>${isFree?`<span class="status free">${t("statusFree")}</span>`:`<span class="status ok">${t("statusPaid")}</span>`}</td>
     </tr>`;
   }).join("");
   document.querySelectorAll("th[data-sort]").forEach(th=>{
@@ -677,13 +1030,427 @@ function renderTable(rows){
   });
 }
 
+/* ====================== V2.1: 历史价格折线图 (SVG) ====================== */
+const CHART_PALETTE = [
+  "#4f8cff","#22c55e","#f59e0b","#ef4444","#a855f7","#06b6d4",
+  "#ec4899","#84cc16","#f97316","#14b8a6","#6366f1","#eab308",
+];
+function renderChart(offer){
+  if (!currentApp || !offer){ $("chartPanel").style.display = "none"; return; }
+  const k = String(currentApp.trackId) + ":" + offer.offerKey;
+  const hist = (state.history[k] || []).slice();
+  const cutoff = Date.now() - 180*86400000;
+  const points = hist.filter(s => s.ts >= cutoff);
+  $("chartPanel").style.display = "block";
+
+  if (!points.length){
+    $("chartContent").innerHTML = `<div class="empty">${t("chartEmpty")}</div>`;
+    $("chartLegend").innerHTML = "";
+    return;
+  }
+
+  // 收集所有出现过的国家
+  const allCC = new Set();
+  points.forEach(s => Object.keys(s.prices).forEach(cc => allCC.add(cc)));
+  const cc_list = [...allCC];
+  // 默认显示：当前 offer 价格最低的 5 国
+  if (Object.keys(chartLegendState).length === 0 || !cc_list.some(cc => chartLegendState[cc])) {
+    chartLegendState = {};
+    const ranked = cc_list
+      .map(cc => {
+        const p = offer.prices[cc];
+        if (!p) return { cc, cny: Infinity };
+        return { cc, cny: convert(p.price, p.currency, "CNY", state.fxRates) || Infinity };
+      })
+      .sort((a,b) => a.cny - b.cny);
+    ranked.slice(0, 5).forEach(x => { chartLegendState[x.cc] = true; });
+  }
+
+  // 收集每个 cc 的时序点（CNY）
+  const series = {};
+  cc_list.forEach(cc => {
+    series[cc] = [];
+    points.forEach(s => {
+      const p = s.prices[cc];
+      if (!p) return;
+      const cny = convert(p.p, p.c, "CNY", state.fxRates);
+      if (cny == null) return;
+      series[cc].push({ ts: s.ts, cny });
+    });
+  });
+
+  // 仅可见线参与 Y 轴范围
+  const visibleCC = cc_list.filter(cc => chartLegendState[cc] && series[cc].length > 0);
+  if (!visibleCC.length){
+    $("chartContent").innerHTML = `<div class="empty">${t("chartNoData")}</div>`;
+    renderLegendButtons(cc_list);
+    return;
+  }
+  const yvals = visibleCC.flatMap(cc => series[cc].map(p => p.cny));
+  const minY = Math.min(...yvals) * 0.92;
+  const maxY = Math.max(...yvals) * 1.08;
+  const minT = cutoff;
+  const maxT = Date.now();
+
+  // SVG
+  const W = 880, H = 280, padL = 56, padR = 16, padT = 16, padB = 32;
+  const innerW = W - padL - padR, innerH = H - padT - padB;
+  const xScale = ts => padL + ((ts - minT) / (maxT - minT)) * innerW;
+  const yScale = v => padT + (1 - (v - minY) / (maxY - minY)) * innerH;
+
+  // X 轴月份刻度
+  const monthTicks = [];
+  for (let i = 0; i <= 6; i++){
+    const ts = minT + (maxT - minT) * i / 6;
+    monthTicks.push({ ts, label: new Date(ts).toLocaleDateString(LANG==="en"?"en-US":"zh-CN", {month:"short", day:"numeric"}) });
+  }
+  // Y 轴刻度
+  const yTicks = [];
+  for (let i = 0; i <= 4; i++){
+    const v = minY + (maxY - minY) * i / 4;
+    yTicks.push({ v, y: yScale(v) });
+  }
+
+  const colorOf = cc => {
+    const idx = cc_list.indexOf(cc) % CHART_PALETTE.length;
+    return CHART_PALETTE[idx];
+  };
+
+  let svg = `<svg class="chart-svg" viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg">`;
+  // grid + Y axis
+  svg += `<g class="chart-axis">`;
+  yTicks.forEach(t => {
+    svg += `<line x1="${padL}" y1="${t.y}" x2="${padL+innerW}" y2="${t.y}" stroke-width="1"/>`;
+    svg += `<text x="${padL-8}" y="${t.y+3}" text-anchor="end">¥${t.v.toFixed(0)}</text>`;
+  });
+  monthTicks.forEach(mt => {
+    const x = xScale(mt.ts);
+    svg += `<text x="${x}" y="${H-padB+18}" text-anchor="middle">${mt.label}</text>`;
+  });
+  svg += `</g>`;
+  // 线 + 点
+  visibleCC.forEach(cc => {
+    const color = colorOf(cc);
+    const pts = series[cc].slice().sort((a,b) => a.ts - b.ts);
+    if (!pts.length) return;
+    let d = "";
+    pts.forEach((p, i) => {
+      d += (i===0?"M":"L") + xScale(p.ts).toFixed(1) + "," + yScale(p.cny).toFixed(1) + " ";
+    });
+    svg += `<path class="chart-line" d="${d}" stroke="${color}"/>`;
+    pts.forEach(p => {
+      svg += `<circle class="chart-dot" cx="${xScale(p.ts).toFixed(1)}" cy="${yScale(p.cny).toFixed(1)}" r="4" fill="${color}" data-cc="${cc}" data-ts="${p.ts}" data-cny="${p.cny.toFixed(2)}"/>`;
+    });
+  });
+  svg += `</svg>`;
+  $("chartContent").innerHTML = svg;
+  renderLegendButtons(cc_list);
+
+  // 悬停 tooltip
+  $("chartContent").querySelectorAll(".chart-dot").forEach(dot => {
+    dot.addEventListener("mouseenter", e => {
+      const tip = $("chartTooltip");
+      const cc = dot.dataset.cc;
+      const ts = +dot.dataset.ts;
+      const cny = +dot.dataset.cny;
+      tip.innerHTML = `${flagOf(cc)} ${nameOf(cc)} · ¥${cny.toFixed(2)}<br><span style="color:var(--muted);font-size:10.5px">${new Date(ts).toLocaleString(LANG==="en"?"en-US":"zh-CN")}</span>`;
+      tip.style.display = "block";
+      const rect = dot.getBoundingClientRect();
+      tip.style.left = (rect.left + window.scrollX + 8) + "px";
+      tip.style.top = (rect.top + window.scrollY - 50) + "px";
+    });
+    dot.addEventListener("mouseleave", () => { $("chartTooltip").style.display = "none"; });
+  });
+}
+function renderLegendButtons(cc_list){
+  const html = cc_list.map(cc => {
+    const idx = cc_list.indexOf(cc) % CHART_PALETTE.length;
+    const color = CHART_PALETTE[idx];
+    const dim = !chartLegendState[cc];
+    return `<span class="chart-legend-item${dim?' dim':''}" data-cc="${cc}">
+      <span class="swatch" style="background:${color}"></span>${flagOf(cc)} ${nameOf(cc)}
+    </span>`;
+  }).join("");
+  $("chartLegend").innerHTML = html;
+  $("chartLegend").querySelectorAll(".chart-legend-item").forEach(el => {
+    el.addEventListener("click", () => {
+      const cc = el.dataset.cc;
+      chartLegendState[cc] = !chartLegendState[cc];
+      // 重渲（offer 还是同一个）
+      const offer = allOffers.find(o => o.offerKey === currentOfferKey);
+      if (offer) renderChart(offer);
+    });
+  });
+}
+
+/* ====================== V2.1: 同应用家族大表 ====================== */
+function openFamilyTable(){
+  if (!currentApp || !allOffers.length){ toast(t("selectApp")); return; }
+  $("familyConvert").value = convertTo || "CNY";
+  renderFamilyTable();
+  $("familyModal").classList.add("show");
+}
+function renderFamilyTable(){
+  if (!allOffers.length) return;
+  const cur = $("familyConvert").value || "CNY";
+  // 行 = 国家（取 selectedCountries），列 = 所有 offer
+  const offers = allOffers; // 全部
+  const ccs = state.selectedCountries;
+  $("familyDesc").textContent = `${esc(currentApp.trackName)} · ${offers.length}${LANG==="en"?" subscriptions":" 个订阅产品"} × ${ccs.length}${LANG==="en"?" regions":" 国"} · ${LANG==="en"?"converted to ":"折算到 "}${cur}`;
+
+  // 计算每列的 min/max（用于热力图色）
+  const colStats = offers.map(off => {
+    const vals = ccs.map(cc => {
+      const p = off.prices[cc];
+      if (!p || p.price === 0) return null;
+      return convert(p.price, p.currency, cur, state.fxRates);
+    }).filter(v => v != null);
+    return { min: vals.length ? Math.min(...vals) : null, max: vals.length ? Math.max(...vals) : null };
+  });
+
+  // 行排序：按"行内最小价"升序
+  const rowOrder = ccs.map(cc => {
+    const lows = offers.map(off => {
+      const p = off.prices[cc];
+      if (!p || p.price === 0) return Infinity;
+      return convert(p.price, p.currency, cur, state.fxRates) || Infinity;
+    });
+    return { cc, low: Math.min(...lows) };
+  }).sort((a,b) => a.low - b.low);
+
+  let html = `<table class="family-table">
+    <thead><tr>
+      <th>${t("colCountry")}</th>
+      ${offers.map(o => `<th>${esc(o.name)}<span class="small">${periodLabel(o.period)}</span></th>`).join("")}
+    </tr></thead><tbody>`;
+  rowOrder.forEach(({cc}) => {
+    html += `<tr><td><span class="flag">${flagOf(cc)}</span> ${nameOf(cc)}<span class="small">${cc}</span></td>`;
+    offers.forEach((off, i) => {
+      const p = off.prices[cc];
+      if (!p) { html += `<td style="color:var(--muted);text-align:center">—</td>`; return; }
+      if (p.price === 0) { html += `<td><span class="status free">${t("statusFree")}</span></td>`; return; }
+      const conv = convert(p.price, p.currency, cur, state.fxRates);
+      // 热力图：min=绿, max=红
+      const stat = colStats[i];
+      let bg = "";
+      if (stat.min != null && stat.max != null && stat.max > stat.min){
+        const ratio = (conv - stat.min) / (stat.max - stat.min);
+        // 0=绿(34,197,94, .15) → 1=红(239,68,68, .15)
+        const r = Math.round(34 + (239-34)*ratio);
+        const g = Math.round(197 + (68-197)*ratio);
+        const b = Math.round(94 + (68-94)*ratio);
+        bg = `background:rgba(${r},${g},${b},0.18)`;
+      } else if (stat.min != null) {
+        bg = "background:rgba(34,197,94,0.15)";
+      }
+      html += `<td style="${bg}">${fmt(conv, cur)}<span class="small">${esc(p.formatted||"")}</span></td>`;
+    });
+    html += `</tr>`;
+  });
+  html += `</tbody></table>`;
+  $("familyTableWrap").innerHTML = html;
+}
+function exportFamilyCSV(){
+  if (!currentApp || !allOffers.length) return;
+  const cur = $("familyConvert").value || "CNY";
+  const offers = allOffers;
+  const ccs = state.selectedCountries;
+  const headers = ["Country Code", "Country", ...offers.flatMap(o => [
+    `${o.name} - ${periodLabel(o.period)} (${cur})`,
+    `${o.name} - ${periodLabel(o.period)} (Local)`,
+  ])];
+  const rows = ccs.map(cc => {
+    const row = [cc, nameOf(cc)];
+    offers.forEach(off => {
+      const p = off.prices[cc];
+      if (!p) { row.push("", ""); return; }
+      const conv = convert(p.price, p.currency, cur, state.fxRates);
+      row.push(conv != null ? conv.toFixed(2) : "", p.formatted || "");
+    });
+    return row;
+  });
+  const csv = [headers, ...rows].map(r => r.map(c => `"${String(c).replace(/"/g,'""')}"`).join(",")).join("\n");
+  downloadCSV(csv, `${sanitize(currentApp.trackName)}_family_${dateStr()}.csv`);
+  toast(t("csvDone"));
+}
+function sanitize(s){ return String(s||"").replace(/[^\w\u4e00-\u9fa5]/g,"_"); }
+function dateStr(){ return new Date().toISOString().slice(0,10); }
+function downloadCSV(csv, name){
+  const blob = new Blob(["\ufeff"+csv], { type: "text/csv;charset=utf-8" });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = name; a.click();
+  URL.revokeObjectURL(a.href);
+}
+
+/* ====================== V2.1: 多 App 对比 ====================== */
+async function openMultiCompare(){
+  const ids = [...multiSelectIds];
+  if (ids.length < 2){ toast(t("needAtLeast2")); return; }
+
+  // 先确保每个 app 有 IAP 数据缓存（无则查）
+  const needFetch = ids.filter(id => !state.iapCache[String(id)] || (Date.now() - state.iapCache[String(id)].queriedAt > 7*86400000));
+  if (needFetch.length){
+    toast(t("queryingApps", {n: needFetch.length}), 2500);
+    for (const id of needFetch){
+      const w = state.watchlist.find(x => x.id === id);
+      if (!w) continue;
+      // 临时构造 currentApp 来跑一次 IAP 查询（不刷 UI）
+      const savedApp = currentApp, savedKey = currentOfferKey, savedAllOffers = allOffers, savedIapByCountry = iapByCountry;
+      currentApp = { trackId: id, trackName: w.trackName, artworkUrl60: w.artworkUrl60, artistName: w.artistName };
+      currentOfferKey = null;
+      try {
+        await runIAP(state.selectedCountries);
+      } catch(e){}
+      currentApp = savedApp; currentOfferKey = savedKey; allOffers = savedAllOffers; iapByCountry = savedIapByCountry;
+    }
+  }
+
+  // Step 1: 弹 picker
+  multiPickerSelections = {};
+  const html = ids.map(id => {
+    const cache = state.iapCache[String(id)];
+    if (!cache) return `<div class="app-row"><div class="app-meta">App ${id} ${LANG==="en"?"failed to load":"加载失败"}</div></div>`;
+    return `<div class="app-row" data-app-id="${id}">
+      <div class="app-meta">
+        <img src="${esc(cache.icon||"")}">
+        <div>
+          <div class="name">${esc(cache.name)}</div>
+          <div style="font-size:11px;color:var(--muted)">${cache.offers.length}${t("iaps")}</div>
+        </div>
+      </div>
+      <div class="offers-grid">
+        ${cache.offers.map(o => `
+          <div class="offer-chip" data-key="${esc(o.offerKey)}">
+            <span>${esc(o.name||o.offerName||"?")}</span>
+            <span class="period">${periodLabel(o.period)}</span>
+          </div>`).join("")}
+      </div>
+    </div>`;
+  }).join("");
+  $("multiAppPicker").innerHTML = html;
+  $("multiPickerOK").disabled = true;
+  updateMultiPickerOKLabel();
+  $("multiAppPicker").querySelectorAll(".app-row").forEach(row => {
+    const id = row.dataset.appId;
+    row.querySelectorAll(".offer-chip").forEach(chip => {
+      chip.addEventListener("click", () => {
+        row.querySelectorAll(".offer-chip").forEach(c => c.classList.remove("active"));
+        chip.classList.add("active");
+        multiPickerSelections[id] = chip.dataset.key;
+        updateMultiPickerOKLabel();
+      });
+    });
+  });
+  $("multiPickerModal").classList.add("show");
+}
+function updateMultiPickerOKLabel(){
+  const ids = [...multiSelectIds];
+  const ok = ids.filter(id => multiPickerSelections[String(id)]).length;
+  $("multiPickerOK").textContent = `${t("compareNow")} (${ok}/${ids.length})`;
+  $("multiPickerOK").disabled = ok < 2 || ok < ids.length;
+}
+function renderMultiCompare(){
+  const cur = $("multiConvert").value || "CNY";
+  const ids = [...multiSelectIds];
+  const cols = ids.map(id => {
+    const cache = state.iapCache[String(id)];
+    const off = cache?.offers.find(o => o.offerKey === multiPickerSelections[String(id)]);
+    return { id, cache, off };
+  }).filter(c => c.off);
+  const ccs = state.selectedCountries;
+
+  // 列内 min/max 用于热力图
+  const colStats = cols.map(({off}) => {
+    const vals = ccs.map(cc => {
+      const p = off.prices[cc];
+      if (!p || p.price === 0) return null;
+      return convert(p.price, p.currency, cur, state.fxRates);
+    }).filter(v => v != null);
+    return { min: vals.length ? Math.min(...vals) : null, max: vals.length ? Math.max(...vals) : null };
+  });
+
+  // 行排序：每行总价升序（仅含有数据的列）
+  const rowOrder = ccs.map(cc => {
+    let total = 0, n = 0;
+    cols.forEach(({off}) => {
+      const p = off.prices[cc];
+      if (!p || p.price === 0) return;
+      const v = convert(p.price, p.currency, cur, state.fxRates);
+      if (v != null) { total += v; n++; }
+    });
+    return { cc, total: n>0 ? total/n : Infinity };
+  }).sort((a,b) => a.total - b.total);
+
+  let html = `<table class="family-table">
+    <thead><tr>
+      <th>${t("colCountry")}</th>
+      ${cols.map(({cache, off}) => `<th>
+        <div style="display:flex;align-items:center;gap:5px;justify-content:center"><img src="${esc(cache.icon||"")}" style="width:18px;height:18px;border-radius:3px"> ${esc(cache.name)}</div>
+        <span class="small">${esc(off.name)} · ${periodLabel(off.period)}</span>
+      </th>`).join("")}
+    </tr></thead><tbody>`;
+  rowOrder.forEach(({cc}) => {
+    html += `<tr><td><span class="flag">${flagOf(cc)}</span> ${nameOf(cc)}<span class="small">${cc}</span></td>`;
+    cols.forEach(({off}, i) => {
+      const p = off.prices[cc];
+      if (!p) { html += `<td style="color:var(--muted);text-align:center">—</td>`; return; }
+      if (p.price === 0) { html += `<td><span class="status free">${t("statusFree")}</span></td>`; return; }
+      const conv = convert(p.price, p.currency, cur, state.fxRates);
+      const stat = colStats[i];
+      let bg = "";
+      if (stat.min != null && stat.max != null && stat.max > stat.min){
+        const ratio = (conv - stat.min) / (stat.max - stat.min);
+        const r = Math.round(34 + (239-34)*ratio);
+        const g = Math.round(197 + (68-197)*ratio);
+        const b = Math.round(94 + (68-94)*ratio);
+        bg = `background:rgba(${r},${g},${b},0.18)`;
+      }
+      html += `<td style="${bg}">${fmt(conv, cur)}<span class="small">${esc(p.formatted||"")}</span></td>`;
+    });
+    html += `</tr>`;
+  });
+  html += `</tbody></table>`;
+  $("multiCompareTableWrap").innerHTML = html;
+}
+function exportMultiCSV(){
+  const cur = $("multiConvert").value || "CNY";
+  const ids = [...multiSelectIds];
+  const cols = ids.map(id => {
+    const cache = state.iapCache[String(id)];
+    const off = cache?.offers.find(o => o.offerKey === multiPickerSelections[String(id)]);
+    return { id, cache, off };
+  }).filter(c => c.off);
+  const ccs = state.selectedCountries;
+  const headers = ["Country Code", "Country", ...cols.flatMap(({cache, off}) => [
+    `${cache.name} - ${off.name} - ${periodLabel(off.period)} (${cur})`,
+    `${cache.name} - ${off.name} - ${periodLabel(off.period)} (Local)`,
+  ])];
+  const rows = ccs.map(cc => {
+    const row = [cc, nameOf(cc)];
+    cols.forEach(({off}) => {
+      const p = off.prices[cc];
+      if (!p) { row.push("", ""); return; }
+      const conv = convert(p.price, p.currency, cur, state.fxRates);
+      row.push(conv != null ? conv.toFixed(2) : "", p.formatted || "");
+    });
+    return row;
+  });
+  const csv = [headers, ...rows].map(r => r.map(c => `"${String(c).replace(/"/g,'""')}"`).join(",")).join("\n");
+  downloadCSV(csv, `multi_app_compare_${dateStr()}.csv`);
+  toast(t("csvDone"));
+}
+
 /* ====================== Watchlist ====================== */
 function renderWatchlist(){
   $("watchCount").textContent = state.watchlist.length;
   $("watchEmpty").style.display = state.watchlist.length?"none":"block";
+  const locale = LANG === "en" ? "en-US" : "zh-CN";
   $("watchlist").innerHTML = state.watchlist.map(w=>{
-    const last = w.lastChecked ? new Date(w.lastChecked).toLocaleString("zh-CN",{month:"short",day:"numeric",hour:"2-digit",minute:"2-digit"}) : "未查询";
+    const last = w.lastChecked ? new Date(w.lastChecked).toLocaleString(locale,{month:"short",day:"numeric",hour:"2-digit",minute:"2-digit"}) : t("queriedYet");
+    const checked = multiSelectIds.has(w.id) ? "checked" : "";
     return `<div class="watch-item ${currentApp&&currentApp.trackId===w.id?'active':''}" data-id="${w.id}">
+      <span class="check-wrap"><input type="checkbox" data-multi="${w.id}" ${checked}></span>
       <img src="${w.artworkUrl60||""}" loading="lazy">
       <div class="meta"><div class="name">${esc(w.trackName)}</div><div class="stat">${last}</div></div>
       <span class="x" data-x="${w.id}">×</span>
@@ -691,31 +1458,49 @@ function renderWatchlist(){
   }).join("");
   $("watchlist").querySelectorAll(".watch-item").forEach(el=>{
     el.addEventListener("click", async e=>{
+      // 多选 checkbox
+      if (e.target.dataset.multi){
+        e.stopPropagation();
+        const id = +e.target.dataset.multi;
+        if (e.target.checked) multiSelectIds.add(id);
+        else multiSelectIds.delete(id);
+        updateMultiBar();
+        return;
+      }
       if (e.target.dataset.x){
         e.stopPropagation();
-        state.watchlist = state.watchlist.filter(x=>x.id!==+e.target.dataset.x); save(); renderWatchlist();
+        const id = +e.target.dataset.x;
+        state.watchlist = state.watchlist.filter(x=>x.id!==id);
+        multiSelectIds.delete(id);
+        save(); renderWatchlist(); updateMultiBar();
         return;
       }
       const id = +el.dataset.id;
       try{
         const d = await api("lookup", { id, country: "us" });
         if (d.resultCount) selectApp(d.results[0]);
-      }catch(e){ toast("加载失败"); }
+      }catch(e){ toast(LANG==="en"?"Load failed":"加载失败"); }
     });
   });
 }
+function updateMultiBar(){
+  const n = multiSelectIds.size;
+  $("multiCount").textContent = n;
+  $("multiBar").classList.toggle("show", n >= 1);
+  $("openMultiCompareBtn").disabled = n < 2;
+}
 function addWatch(){
   if (!currentApp) return;
-  if (state.watchlist.find(x=>x.id===currentApp.trackId)){ toast("已在监控中"); return; }
+  if (state.watchlist.find(x=>x.id===currentApp.trackId)){ toast(t("alreadyInWatch")); return; }
   state.watchlist.unshift({
     id: currentApp.trackId, trackName: currentApp.trackName,
     artistName: currentApp.artistName, artworkUrl60: currentApp.artworkUrl60,
     lastChecked: Date.now(),
   });
-  save(); renderWatchlist(); toast("已加入监控 ✓");
+  save(); renderWatchlist(); toast(t("addedToWatch"));
 }
 async function refreshAll(){
-  if (!state.watchlist.length){ toast("监控列表为空"); return; }
+  if (!state.watchlist.length){ toast(LANG==="en"?"Watchlist is empty":"监控列表为空"); return; }
   toast(`正在刷新 ${state.watchlist.length} 个...`, 2500);
   for (const w of state.watchlist){
     try{
@@ -728,7 +1513,7 @@ async function refreshAll(){
       }
     }catch(_){}
   }
-  save(); renderWatchlist(); toast("✓ 刷新完成");
+  save(); renderWatchlist(); toast(LANG==="en"?"✓ Refreshed":"✓ 刷新完成");
 }
 
 /* ====================== Settings ====================== */
@@ -750,7 +1535,7 @@ function applyPreset(filter){
 
 /* ====================== Export ====================== */
 function exportCSV(){
-  if (!currentTableData.length){ toast("先选一个 App"); return; }
+  if (!currentTableData.length){ toast(t("selectApp")); return; }
   const offer = currentMode==="iap" ? allOffers.find(o=>o.offerKey===currentOfferKey) : null;
   const headers = ["Country Code","Country","Currency","Local Price","Formatted","CNY Equiv","USD Equiv","Period","Localized Name","Status"];
   const rows = currentTableData.map(r=> r.ok ? [
@@ -765,19 +1550,21 @@ function exportCSV(){
   const offerLabel = offer ? "_"+offer.name.replace(/[^\w\u4e00-\u9fa5]/g,"_") : "";
   a.download = `${currentApp.trackName.replace(/[^\w\u4e00-\u9fa5]/g,"_")}${offerLabel}_${new Date().toISOString().slice(0,10)}.csv`;
   a.click();
-  toast("CSV 已下载 ✓");
+  toast(t("csvDone"));
 }
 function copyTable(){
   if (!currentTableData.length) return;
   const lines = ["地区\t原币\t折算CNY\t本地化名称"];
   currentTableData.filter(r=>r.ok).forEach(r=>lines.push(`${nameOf(r.country)}\t${r.formattedPrice||""}\t${r.cnyPrice?.toFixed(2)||""}\t${r.trackName||""}`));
   navigator.clipboard.writeText(lines.join("\n"));
-  toast("已复制 ✓");
+  toast(t("copyDone"));
 }
 
 /* ====================== Wire up ====================== */
+applyI18N();           // 首次渲染语言文案
 populateCountrySelect();
 renderWatchlist();
+updateMultiBar();
 $("searchBtn").addEventListener("click", doSearch);
 $("searchInput").addEventListener("keydown", e=>{ if(e.key==="Enter") doSearch(); });
 $("addWatchBtn").addEventListener("click", addWatch);
@@ -786,7 +1573,7 @@ $("settingsBtn").addEventListener("click", openSettings);
 $("settingsCancel").addEventListener("click", ()=>$("settingsModal").classList.remove("show"));
 $("settingsSave").addEventListener("click", ()=>{
   const checked = [...document.querySelectorAll("#countryGrid input:checked")].map(cb=>cb.value);
-  if (!checked.length){ toast("至少选一个地区"); return; }
+  if (!checked.length){ toast(t("selectOne")); return; }
   state.selectedCountries = checked; save();
   $("settingsModal").classList.remove("show");
   if (currentApp) runQuery();
@@ -816,6 +1603,69 @@ document.querySelectorAll(".mode-tabs button").forEach(b=>{
 $("exportBtn").addEventListener("click", exportCSV);
 $("copyBtn").addEventListener("click", copyTable);
 $("settingsModal").addEventListener("click", e=>{ if(e.target.id==="settingsModal") $("settingsModal").classList.remove("show"); });
+
+// V2.1: 语言切换
+document.querySelectorAll(".lang-switch button").forEach(b => {
+  b.addEventListener("click", () => {
+    LANG = b.dataset.lang;
+    localStorage.setItem("aptLang", LANG);
+    applyI18N();
+    populateCountrySelect();
+    renderWatchlist();
+    if (currentApp){
+      // 重渲当前内容
+      if (currentMode === "iap" && allOffers.length){
+        // 重新校准 canonical name（中英区列表不变，但首次进 EN 模式 fallback name 仍是英文，OK）
+        renderOfferBar();
+        renderForOffer();
+      } else if (currentMode === "app"){
+        renderTable(appPriceResults);
+      }
+    }
+  });
+});
+
+// V2.1: SKU 模糊搜索
+$("offerSearch")?.addEventListener("input", debounce(() => {
+  renderOfferBar();
+  // 如果当前选中的 offer 被过滤掉了，自动选第一个
+  if (allOffersFiltered.length && !allOffersFiltered.find(o => o.offerKey === currentOfferKey)){
+    currentOfferKey = allOffersFiltered[0].offerKey;
+    renderOfferBar(); renderForOffer();
+  }
+}, 150));
+
+// V2.1: offer chip 点击（事件委托，不在 renderOfferBar 内重复绑）
+$("offerBar").addEventListener("click", e => {
+  const chip = e.target.closest(".offer-chip");
+  if (!chip) return;
+  currentOfferKey = chip.dataset.key;
+  renderOfferBar();
+  renderForOffer();
+});
+
+// V2.1: 家族大表
+$("familyBtn").addEventListener("click", openFamilyTable);
+$("familyClose").addEventListener("click", () => $("familyModal").classList.remove("show"));
+$("familyModal").addEventListener("click", e => { if (e.target.id==="familyModal") $("familyModal").classList.remove("show"); });
+$("familyConvert").addEventListener("change", renderFamilyTable);
+$("familyExportBtn").addEventListener("click", exportFamilyCSV);
+
+// V2.1: 多 App 对比
+$("openMultiCompareBtn").addEventListener("click", openMultiCompare);
+$("multiPickerCancel").addEventListener("click", () => $("multiPickerModal").classList.remove("show"));
+$("multiPickerModal").addEventListener("click", e => { if (e.target.id==="multiPickerModal") $("multiPickerModal").classList.remove("show"); });
+$("multiPickerOK").addEventListener("click", () => {
+  if (Object.keys(multiPickerSelections).length < 2){ toast(t("pleasePickOffer")); return; }
+  $("multiPickerModal").classList.remove("show");
+  $("multiConvert").value = convertTo || "CNY";
+  renderMultiCompare();
+  $("multiCompareModal").classList.add("show");
+});
+$("multiCompareClose").addEventListener("click", () => $("multiCompareModal").classList.remove("show"));
+$("multiCompareModal").addEventListener("click", e => { if (e.target.id==="multiCompareModal") $("multiCompareModal").classList.remove("show"); });
+$("multiConvert").addEventListener("change", renderMultiCompare);
+$("multiExportBtn").addEventListener("click", exportMultiCSV);
 
 loadFx();
 </script>
