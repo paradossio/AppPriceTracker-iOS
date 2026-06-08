@@ -4,6 +4,8 @@
 [![Python 3.7+](https://img.shields.io/badge/python-3.7+-blue.svg)](https://www.python.org/downloads/)
 [![Platform](https://img.shields.io/badge/platform-macOS%20%7C%20Windows-lightgrey.svg)]()
 
+**中文 · [English](README_EN.md)**
+
 **实测可拿到 ChatGPT Plus / Pro / Spotify / Notion / Bumble 等任意 App 的全球订阅价格。**
 
 > 双击启动器 → 浏览器自动打开 → 搜索 App → 一键看 175 个国家的订阅价格对比
